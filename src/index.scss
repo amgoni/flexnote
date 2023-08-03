@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;700&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap");
+@import "variables.scss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $text-font;
+  font-size: 15px;
+}
+
+h1 {
+  font-family: $heading-font;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}

@@ -1,0 +1,24 @@
+@import "../variables.scss";
+
+.search {
+  display: flex;
+  width: 60%;
+
+  .search-input {
+    width: 100%;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $dark-color;
+    background-color: $light-color;
+    transition: all 0.3s;
+
+    &:focus {
+      background-color: white;
+      box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+    }
+  }
+}
