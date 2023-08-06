@@ -1,0 +1,9 @@
+@import "./variables.scss";
+
+.status-message {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  color: $dark-color;
+  padding: 1rem;
+}

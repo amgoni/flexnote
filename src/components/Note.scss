@@ -1,0 +1,156 @@
+@import "../variables.scss";
+
+.note {
+  // display: flex;
+  // flex-direction: column;
+  border: 1px solid $dark-color;
+  border-radius: 5px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 500px;
+  max-height: 300px;
+  // overflow-y: auto;
+  min-height: fit-content;
+  transition: all 0.1s ease;
+  text-overflow: ellipsis;
+
+  textarea {
+    resize: none;
+  }
+
+  svg {
+    margin-left: 1rem;
+    cursor: pointer;
+    color: $dark-color;
+  }
+
+  svg:first-child {
+    margin-left: 0;
+  }
+
+  .note-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $dark-color;
+  }
+
+  .note-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    .note-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 100%;
+      .note-text {
+        white-space: pre-wrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .note-icons {
+      display: block;
+      padding-top: 1rem;
+
+      svg {
+        color: white;
+        transition: all 0.1s ease;
+      }
+    }
+  }
+  .edit-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    .edit-content {
+      .edit-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $dark-color;
+      }
+
+      .edit-title,
+      .edit-text {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 1rem;
+        padding: 0.1rem;
+        border: transparent;
+        font-family: $heading-font;
+        outline: none;
+      }
+
+      .edit-icons {
+        svg {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+
+  .note-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: blowOutModal 0.1s ease-in-out;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    // max-width: 600px;
+    // max-height: 80vh;
+    overflow-y: scroll;
+    min-height: 400px;
+    min-width: 600px;
+    max-height: 600px;
+    max-width: 800px;
+    padding: 1rem;
+    border-radius: 8px;
+    // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .note-icons {
+      margin-top: 2rem;
+    }
+  }
+
+  .modal-close {
+    cursor: pointer;
+  }
+
+  .modal-content p {
+    white-space: pre-wrap;
+  }
+}
+
+.note:hover {
+  box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+  .note-icons {
+    display: block;
+
+    svg {
+      color: $dark-color;
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes blowOutModal {
+  0% {
+    transform: scale(0); /* Start with the modal scaled down to 0 size */
+    opacity: 0; /* Start with opacity 0 */
+  }
+  100% {
+    transform: scale(1); /* End with the modal at its regular size (scale 1) */
+    opacity: 1; /* End with opacity 1 (fully visible) */
+  }
+}

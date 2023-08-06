@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Notes from "./components/Notes";
 import AddNote from "./components/AddNote";
 import About from "./components/About";
-import Button from "./components/Button";
 
 const firebaseURL =
   "https://flexnote-6cb48-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const App = () => {
   // const [showAddNote, setShowAddNote] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
@@ -97,31 +99,80 @@ const App = () => {
     );
   };
 
+  // Save Note (implement saving the edited note to the database)
+  const saveNote = async (id, editedTitle, editedText) => {
+    try {
+      // Make a PUT request to update the note in the database
+      const res = await fetch(`${firebaseURL}notes/${id}.json`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ title: editedTitle, text: editedText }),
+      });
+
+      if (res.ok) {
+        // If the update is successful, update the note in the state
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note.id === id
+              ? { ...note, title: editedTitle, text: editedText }
+              : note
+          )
+        );
+      } else {
+        // Handle error if the update fails
+        alert("Failed to update the note.");
+      }
+    } catch (error) {
+      alert("Error occurred while updating the note:", error);
+    }
+  };
+
+  useEffect(() => {
+    const getNotes = async () => {
+      setIsLoading(true);
+      try {
+        const notesFromServer = await fetchNotes();
+        setNotes(notesFromServer);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+        setHasError(true);
+        setIsLoading(false);
+      }
+    };
+
+    getNotes();
+  }, []);
+
   return (
     <Router>
       <div className="container">
-        <Header title="flexnote" />
+        <Header />
         <Routes>
           <Route
             path="/"
             element={
               <>
-                {/* {location.pathname === "/" && (
-                  <Button
-                    color={showAddNote ? "#F06449" : "#5BC3EB"}
-                    text={showAddNote ? "Close" : "Add"}
-                    onClick={() => setShowAddNote(!showAddNote)}
-                  />
-                )} */}
                 <AddNote onAdd={addNote} />
-                {notes.length > 0 ? (
+                {isLoading ? (
+                  <h3 className="status-message">Loading...</h3>
+                ) : hasError ? (
+                  <h3 className="status-message">
+                    Error fetching notes. Please try again later.
+                  </h3>
+                ) : notes.length > 0 ? (
                   <Notes
                     notes={notes}
                     onDelete={deleteNote}
                     onToggle={toggleReminder}
+                    onSave={saveNote}
                   />
                 ) : (
-                  "No Notes To Show"
+                  <h3 className="status-message">
+                    Saved notes will appear here.
+                  </h3>
                 )}
               </>
             }

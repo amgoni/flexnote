@@ -1,0 +1,68 @@
+@import "../variables.scss";
+
+.addnote-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+  margin-bottom: 5rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+  color: $dark-color;
+  text-align: center;
+
+  .form-control {
+    width: 100%;
+    display: flex;
+
+    .text-input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.1rem;
+      border: transparent;
+      font-family: $heading-font;
+    }
+
+    .text-input:focus {
+      outline: none;
+    }
+
+    .title-input {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $dark-color;
+    }
+
+    textarea {
+      resize: none;
+    }
+  }
+
+  button {
+    background: white;
+    border: none;
+    color: $dark-color;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  button:active {
+    outline: none;
+    transform: scale(1.1);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .addnote-form {
+    width: 90%;
+    margin-bottom: 3rem;
+  }
+}

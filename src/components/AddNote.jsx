@@ -1,56 +1,64 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import "./AddNote.scss";
+import { FaFloppyDisk } from "react-icons/fa6";
 
 const AddNote = ({ onAdd }) => {
+  const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  // const [day, setDay] = useState("");
-  // const [reminder, setReminder] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if (!text) {
-      alert("Please write a note first");
+      alert("Please write a note");
       return;
     }
 
-    onAdd({ text });
+    onAdd({ title, text });
 
+    setTitle("");
     setText("");
-    // setDay("");
-    // setReminder(false);
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const calculateTextAreaRows = (text) => {
+    // Split the text by line breaks and calculate the number of rows required
+    const lines = text.split("\n");
+    return lines.length;
   };
 
   return (
-    <form className="add-form" onSubmit={onSubmit}>
+    <form className="addnote-form" onSubmit={onSubmit}>
       <div className="form-control">
-        {/* <label>Task</label> */}
         <input
+          className="text-input title-input"
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+      </div>
+      <div className="form-control">
+        <textarea
+          className="text-input"
           type="text"
           placeholder="Take a note..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={handleTextChange}
+          rows={calculateTextAreaRows(text)} // Set the rows dynamically based on text content
         />
       </div>
-      {/* <div className="form-control">
-        <label>Day & Time</label>
-        <input
-          type="text"
-          placeholder="Add Day & Time"
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
-        />
-      </div> */}
-      {/* <div className="form-control form-control-check">
-        <label>Set Reminder</label>
-        <input
-          type="checkbox"
-          checked={reminder}
-          value={reminder}
-          onChange={(e) => setReminder(e.currentTarget.checked)}
-        />
-      </div> */}
 
-      <input type="submit" value="Add Note" className="btn btn-block" />
+      <button type="submit">
+        <FaFloppyDisk size={20} />
+      </button>
     </form>
   );
 };
