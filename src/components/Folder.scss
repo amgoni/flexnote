@@ -1,0 +1,77 @@
+@import "../variables.scss";
+
+.folder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid $dark-color;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  background-color: $dark-color;
+  color: white;
+
+  a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .folder-icons {
+    display: flex;
+    align-items: center;
+  }
+
+  svg {
+    color: $dark-color;
+    margin-left: 1rem;
+
+    @media screen and (max-width: 768px) {
+      color: white;
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+
+    svg {
+      color: white;
+    }
+  }
+
+  .edit-folder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    input {
+      border: none;
+      outline: none;
+      border-radius: 0.2rem;
+      color: $dark-color;
+      padding: 0.3rem;
+      font-family: $heading-font;
+      transition: all 0.3s;
+      width: 100%;
+
+      @media screen and (max-width: 426px) {
+        width: 100%;
+      }
+
+      &:focus {
+        background-color: white;
+        box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+      }
+    }
+
+    .edit-folder-icons {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

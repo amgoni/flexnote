@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Note from "./Note";
-import "./Notes.scss";
+import "./FolderContents.scss";
 
-const Notes = ({ notes, onDelete, onSave, folders, onMoveToFolder }) => {
+const FolderContents = ({
+  notes,
+  onDelete,
+  onSave,
+  folders,
+  onMoveToFolder,
+  onRemoveNoteFromFolder,
+}) => {
   const [gridColumns, setGridColumns] = useState(3);
-  const [unfolderedNotes, setUnfolderedNotes] = useState([]);
 
   // Calculate the number of columns based on the screen size
   const calculateGridColumns = () => {
@@ -23,12 +29,6 @@ const Notes = ({ notes, onDelete, onSave, folders, onMoveToFolder }) => {
     setGridColumns(columns);
   };
 
-  // Filter unfoldered notes when notes prop changes
-  useEffect(() => {
-    const unfoldered = notes.filter((note) => !note.folderId);
-    setUnfolderedNotes(unfoldered);
-  }, [notes]);
-
   // Add event listener for window resize
   useEffect(() => {
     handleResize(); // Set initial number of columns
@@ -36,15 +36,19 @@ const Notes = ({ notes, onDelete, onSave, folders, onMoveToFolder }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [notes]); // Trigger the effect whenever the notes array changes
 
-  return unfolderedNotes.length > 0 ? (
-    <section
-      className="notes"
+  const handleRemoveNoteFromFolder = (noteId) => {
+    // Call the onRemoveFromFolder function passed from App component
+    onRemoveNoteFromFolder(noteId);
+  };
+
+  return (
+    <div
+      className="folder-contents"
       style={{
         gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
       }}
     >
-      {/* Display notes that are not in folders */}
-      {unfolderedNotes.map((note, index) => (
+      {notes.map((note, index) => (
         <Note
           key={index}
           note={note}
@@ -52,12 +56,11 @@ const Notes = ({ notes, onDelete, onSave, folders, onMoveToFolder }) => {
           onSave={onSave}
           folders={folders}
           onMoveToFolder={onMoveToFolder}
+          onRemoveNoteFromFolder={handleRemoveNoteFromFolder}
         />
       ))}
-    </section>
-  ) : (
-    <h3 className="status-message">Saved notes will appear hear.</h3>
+    </div>
   );
 };
 
-export default Notes;
+export default FolderContents;

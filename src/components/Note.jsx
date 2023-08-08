@@ -1,11 +1,27 @@
 import React, { useState } from "react";
-import { FaFloppyDisk, FaPen, FaXmark, FaTrashCan } from "react-icons/fa6";
+import {
+  FaFloppyDisk,
+  FaPen,
+  FaXmark,
+  FaTrashCan,
+  FaPlus,
+  FaMinus,
+} from "react-icons/fa6";
 import "./Note.scss";
 
-const Note = ({ note, onDelete, onSave }) => {
+const Note = ({
+  note,
+  onDelete,
+  onSave,
+  folders,
+  onMoveToFolder,
+  onRemoveNoteFromFolder,
+}) => {
   const [isEditable, setIsEditable] = useState(false);
   const [isModalEditable, setIsModalEditable] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [isNoteSelected, setIsNoteSelected] = useState(false);
+  const [selectedFolderId, setSelectedFolderId] = useState("");
 
   const [editedTitle, setEditedTitle] = useState(note.title);
   const [editedModalTitle, setEditedModalTitle] = useState(note.title);
@@ -70,6 +86,24 @@ const Note = ({ note, onDelete, onSave }) => {
     e.stopPropagation(); // Prevent the click event from bubbling up to the note container
   };
 
+  const handleNoteSelection = () => {
+    setIsNoteSelected(!isNoteSelected);
+    setIsClicked(false); // Close the modal when the note is selected
+  };
+
+  const handleFolderSelection = (e) => {
+    setSelectedFolderId(e.target.value);
+  };
+
+  const handleMoveToFolder = () => {
+    onMoveToFolder([note], selectedFolderId);
+    setIsNoteSelected(false);
+  };
+
+  const handleRemoveFromFolder = () => {
+    onRemoveNoteFromFolder(note.id);
+  };
+
   return (
     <div className={`note ${isEditable ? "editing" : ""}`}>
       {isEditable ? (
@@ -86,7 +120,7 @@ const Note = ({ note, onDelete, onSave }) => {
               className="edit-text"
               value={editedText}
               onChange={(e) => setEditedText(e.target.value)}
-              rows={calculateTextAreaRows(editedText)}
+              // rows={calculateTextAreaRows(editedText)}
             />
           </div>
 
@@ -96,16 +130,55 @@ const Note = ({ note, onDelete, onSave }) => {
           </div>
         </div>
       ) : (
-        <div className="note-container" onClick={handleNoteClick}>
-          <div className="note-content">
+        <div className="note-container">
+          <div className="note-content" onClick={handleNoteClick}>
             <h3 className="note-title">{note.title}</h3>
             <p className="note-text">{note.text}</p>
           </div>
 
-          <div className="note-icons">
-            <FaPen onClick={handleEditButtonClick} />
-
-            <FaTrashCan onClick={handleDeleteButtonClick} />
+          <div className="note-actions">
+            <div className="note-selection">
+              {note.folderId ? ( // Show the "remove from folder" button if the note is in a folder
+                <FaMinus className="minus" onClick={handleRemoveFromFolder} />
+              ) : (
+                <>
+                  {isNoteSelected ? (
+                    <FaXmark
+                      className="checkbox checked"
+                      onClick={handleNoteSelection}
+                    />
+                  ) : (
+                    <FaPlus
+                      className="checkbox"
+                      type="checkbox"
+                      checked={isNoteSelected}
+                      onClick={handleNoteSelection}
+                      style={{ display: isNoteSelected && "none" }}
+                    />
+                  )}
+                </>
+              )}
+              {isNoteSelected && (
+                <div className="note-folder-select">
+                  <select
+                    value={selectedFolderId}
+                    onChange={handleFolderSelection}
+                  >
+                    <option value="">Select Folder</option>
+                    {folders.map((folder) => (
+                      <option key={folder.id} value={folder.id}>
+                        {folder.name}
+                      </option>
+                    ))}
+                  </select>
+                  <FaPlus onClick={handleMoveToFolder} />
+                </div>
+              )}
+            </div>
+            <div className="note-icons">
+              <FaPen onClick={handleEditButtonClick} />
+              <FaTrashCan onClick={handleDeleteButtonClick} />
+            </div>
           </div>
         </div>
       )}

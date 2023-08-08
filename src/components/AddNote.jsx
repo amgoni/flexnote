@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import "./AddNote.scss";
-import { FaFloppyDisk } from "react-icons/fa6";
+import { FaFloppyDisk, FaXmark } from "react-icons/fa6";
 
 const AddNote = ({ onAdd }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+
+  const handleCancel = (e) => {
+    setTitle("");
+    setText("");
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -47,7 +52,7 @@ const AddNote = ({ onAdd }) => {
       </div>
       <div className="form-control">
         <textarea
-          className="text-input"
+          className="text-input note-input"
           type="text"
           placeholder="Take a note..."
           value={text}
@@ -55,10 +60,14 @@ const AddNote = ({ onAdd }) => {
           rows={calculateTextAreaRows(text)} // Set the rows dynamically based on text content
         />
       </div>
-
-      <button type="submit">
-        <FaFloppyDisk size={20} />
-      </button>
+      {(title || text) && (
+        <div className="addnote-form-icons">
+          <FaXmark onClick={handleCancel} />
+          <button type="submit">
+            <FaFloppyDisk />
+          </button>
+        </div>
+      )}
     </form>
   );
 };

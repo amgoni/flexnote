@@ -1,0 +1,112 @@
+@import "../variables.scss";
+
+.folders-container {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  color: $dark-color;
+  border: 1px solid $dark-color;
+  border-radius: 5px;
+  padding: 1rem;
+
+  svg:active {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  svg:hover {
+    cursor: pointer;
+  }
+
+  .folders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    svg {
+      margin-left: 1rem;
+      color: white;
+      background-color: $dark-color;
+      border-radius: 50%;
+      padding: 0.2rem;
+    }
+  }
+
+  .add-folder {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+
+    input {
+      border: none;
+      outline: none;
+      border-radius: 0.2rem;
+      color: $dark-color;
+      padding: 0.5rem;
+      font-family: $heading-font;
+      color: $dark-color;
+      background-color: $light-color;
+      transition: all 0.3s;
+
+      @media screen and (max-width: 426px) {
+        width: 100%;
+      }
+
+      &:focus {
+        background-color: white;
+        box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
+      }
+    }
+
+    svg {
+      margin-left: 0.2rem;
+      padding: 0.2rem;
+
+      //   @media screen and (max-width: 400px) {
+      //     margin-top: 0.5rem;
+      //   }
+    }
+
+    svg:active {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+
+    @media screen and (max-width: 426px) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  .folders {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+    grid-gap: 1rem;
+
+    @media screen and (max-width: 768px) {
+      // For small devices, use a single column
+      --grid-columns: 1;
+    }
+
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      // For medium devices, use two columns
+      --grid-columns: 2;
+    }
+  }
+
+  @media screen and (max-width: 426px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 376px) {
+    width: 90%;
+  }
+}

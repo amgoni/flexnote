@@ -53,20 +53,18 @@ const Header = () => {
         <Search />
         <div className="header-icons">
           <a href="/" className="profile">
-            <FaUserLarge color="2660a4" size={20} />
+            <FaUserLarge color="2660a4" />
           </a>
           {toggleMenu ? (
             <FaGear
               className="gear gear-close"
               color="2660a4"
-              size={20}
               onClick={toggleHandler}
             />
           ) : (
             <FaGear
               className="gear gear-open"
               color="2660a4"
-              size={20}
               onClick={toggleHandler}
             />
           )}

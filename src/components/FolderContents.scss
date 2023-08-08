@@ -1,4 +1,4 @@
-.notes {
+.folder-contents {
   display: grid;
   grid-gap: 1rem;
   justify-content: center;
@@ -21,7 +21,7 @@
 }
 
 @media screen and (max-width: 400px) {
-  .notes {
+  .folder-contents {
     min-width: 70%;
   }
 }
