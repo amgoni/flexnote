@@ -1,14 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import flexnote from "../assets/flexnote.png";
 import { FaGear, FaUserLarge } from "react-icons/fa6";
 import Search from "./Search";
 import "./Header.scss";
+import AuthContext from "../store/auth-context";
 
 const Header = ({ onSearch }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const menuRef = useRef(null);
+
+  const authCtx = useContext(AuthContext);
+
+  const isLoggedIn = authCtx.isLoggedIn;
+
+  const logoutHandler = () => {
+    authCtx.logout();
+  };
 
   const toggleHandler = () => {
     setToggleMenu(!toggleMenu);
@@ -73,14 +82,15 @@ const Header = ({ onSearch }) => {
         <div ref={menuRef} className={toggleMenu ? "menu show-menu" : "menu"}>
           <ul>
             <li>
-              <a href="">Switch to Dark Mode</a>
-            </li>
-            <li>
               <Link to="/about">About</Link>
             </li>
-            <li>
-              <a href="/">Sign Out</a>
-            </li>
+            {isLoggedIn && (
+              <li>
+                <Link to="/" onClick={logoutHandler}>
+                  Logout
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

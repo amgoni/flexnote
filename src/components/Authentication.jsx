@@ -1,10 +1,8 @@
 import { useState, useRef, useContext } from "react";
-import { useHistory } from "react-router-dom";
 import AuthContext from "../store/auth-context.jsx";
-import "./authentication.scss";
+import "./Authentication.scss";
 
 const Authentication = () => {
-  const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -29,11 +27,12 @@ const Authentication = () => {
 
     if (isLogin) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAWk_N5lEESA4Bjcphf1kJyjk6kEfqClfo";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA38D2Geor0dlS_f--HlS6N3Y121a1R_4E";
     } else {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAWk_N5lEESA4Bjcphf1kJyjk6kEfqClfo";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA38D2Geor0dlS_f--HlS6N3Y121a1R_4E";
     }
+
     fetch(url, {
       method: "POST",
       body: JSON.stringify({
@@ -52,9 +51,17 @@ const Authentication = () => {
         } else {
           return res.json().then((data) => {
             let errorMessage = "Authentication failed!";
-            // if (data && data.error && data.error.message) {
-            //   errorMessage = data.error.message;
-            // }
+
+            // Check if the error is due to incorrect credentials
+            if (
+              data &&
+              data.error &&
+              data.error.message === "INVALID_PASSWORD"
+            ) {
+              errorMessage = "Invalid email or password.";
+            } else if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
 
             throw new Error(errorMessage);
           });
@@ -66,10 +73,9 @@ const Authentication = () => {
         );
 
         authCtx.login(data.idToken, expirationTime.toISOString());
-        history.replace("/home");
       })
       .catch((err) => {
-        alert("Invalid e-mail or password!");
+        alert(err.message); // Show specific error message
       });
   };
 
