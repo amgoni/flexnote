@@ -5,7 +5,7 @@ import { FaGear, FaUserLarge } from "react-icons/fa6";
 import Search from "./Search";
 import "./Header.scss";
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const menuRef = useRef(null);
@@ -50,7 +50,7 @@ const Header = () => {
     <nav className={`header ${hasScrolled ? "has-shadow" : ""}`}>
       <div className="header-container">
         <img src={flexnote} alt="" />
-        <Search />
+        <Search searchFilter={onSearch} />
         <div className="header-icons">
           <a href="/" className="profile">
             <FaUserLarge color="2660a4" />

@@ -1,0 +1,35 @@
+@import "../variables.scss";
+
+.search-results {
+  display: grid;
+  grid-gap: 1rem;
+  justify-content: center;
+  margin: 0 1rem auto;
+  max-width: 1200px; // Set a maximum width for the grid container
+  padding: 1rem; // Add some padding to the container
+  justify-items: center;
+
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+
+  @media screen and (max-width: 768px) {
+    // For small devices, use a single column
+    --grid-columns: 1;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    // For medium devices, use two columns
+    --grid-columns: 2;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .search-results {
+    min-width: 70%;
+  }
+}
+
+.results-heading {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  padding: 0;
+}

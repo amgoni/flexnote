@@ -26,6 +26,7 @@ const FolderPage = ({
     return (
       <div className="folder-page">
         <h2>{selectedFolder.name}</h2>
+
         <FolderContents
           notes={getNotesForSelectedFolder()} // Pass the notes of the selected folder
           onDelete={onDelete}

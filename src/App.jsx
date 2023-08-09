@@ -9,6 +9,7 @@ import AddNote from "./components/AddNote";
 import About from "./Pages/About";
 import Folders from "./components/Folders";
 import FolderPage from "./Pages/FolderPage";
+import SearchResults from "./components/SearchResults";
 
 const firebaseURL =
   "https://flexnote-6cb48-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -21,6 +22,8 @@ const App = () => {
   const [selectedNotes, setSelectedNotes] = useState([]);
   const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [notesInFolders, setNotesInFolders] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Add state for search query
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const getNotes = async () => {
@@ -214,6 +217,7 @@ const App = () => {
     }
   };
 
+  // Move to Folder
   const moveToFolder = async (notesToMove, folderId) => {
     const updatedNotes = notesToMove.map((note) => ({
       ...note,
@@ -276,12 +280,32 @@ const App = () => {
     setSelectedNotes([]); // Reset selectedNotes when a folder is clicked
   };
 
-  // Get the notes that belong to the selected folder
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+
+    const filteredNotes = notes.filter((note) =>
+      note.text.toLowerCase().includes(searchTerm)
+    );
+    setSearchResults(filteredNotes);
+
+    // If the search term is empty, reset the search results
+    searchTerm === "" && setSearchResults([]);
+  };
 
   return (
     <Router>
       <div className="container">
-        <Header />
+        <Header onSearch={handleSearch} />
+        {searchResults.length > 0 && (
+          <SearchResults
+            searchResults={searchResults}
+            onDelete={deleteNote}
+            onSave={saveNote}
+            folders={folders}
+            onMoveToFolder={moveToFolder}
+            onRemoveNoteFromFolder={removeNoteFromFolder}
+          />
+        )}
 
         <Routes>
           <Route

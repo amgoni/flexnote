@@ -41,7 +41,7 @@ const FolderContents = ({
     onRemoveNoteFromFolder(noteId);
   };
 
-  return (
+  return notes.length > 0 ? (
     <div
       className="folder-contents"
       style={{
@@ -60,6 +60,10 @@ const FolderContents = ({
         />
       ))}
     </div>
+  ) : (
+    <h3 className="status-message">
+      Notes added to this folder will appear here.
+    </h3>
   );
 };
 
