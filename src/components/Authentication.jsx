@@ -10,6 +10,9 @@ const Authentication = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -17,6 +20,7 @@ const Authentication = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    setErrorMessage("");
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
@@ -72,16 +76,17 @@ const Authentication = () => {
           new Date().getTime() + +data.expiresIn * 1000
         );
 
-        authCtx.login(data.idToken, expirationTime.toISOString());
+        authCtx.login(data.idToken, data.localId, expirationTime.toISOString());
       })
       .catch((err) => {
-        alert(err.message); // Show specific error message
+        setErrorMessage(err.message); // Set the error message
       });
   };
 
   return (
     <section className="authentication">
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={submitHandler}>
         <div className="authentication-field">
           <label htmlFor="email">Your Email</label>
@@ -94,7 +99,14 @@ const Authentication = () => {
             id="password"
             required
             ref={passwordInputRef}
+            onFocus={() => setShowPasswordRequirements(true)}
+            onBlur={() => setShowPasswordRequirements(false)}
           />
+          {!isLogin && showPasswordRequirements && (
+            <p className="password-requirements">
+              Password must be at least 6 characters long.
+            </p>
+          )}
         </div>
         <div className="authentication-buttons">
           {!isLoading && (

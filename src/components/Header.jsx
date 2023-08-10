@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import flexnote from "../assets/flexnote.png";
-import { FaGear, FaUserLarge } from "react-icons/fa6";
+import { FaGripLines, FaXmark } from "react-icons/fa6";
 import Search from "./Search";
 import "./Header.scss";
 import AuthContext from "../store/auth-context";
@@ -61,17 +61,17 @@ const Header = ({ onSearch }) => {
         <img src={flexnote} alt="" />
         <Search searchFilter={onSearch} />
         <div className="header-icons">
-          <a href="/" className="profile">
+          {/* <a href="/" className="profile">
             <FaUserLarge color="2660a4" />
-          </a>
+          </a> */}
           {toggleMenu ? (
-            <FaGear
+            <FaXmark
               className="gear gear-close"
               color="2660a4"
               onClick={toggleHandler}
             />
           ) : (
-            <FaGear
+            <FaGripLines
               className="gear gear-open"
               color="2660a4"
               onClick={toggleHandler}
@@ -81,15 +81,13 @@ const Header = ({ onSearch }) => {
 
         <div ref={menuRef} className={toggleMenu ? "menu show-menu" : "menu"}>
           <ul>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
+            <Link to="/about">
+              <li>About</li>
+            </Link>
             {isLoggedIn && (
-              <li>
-                <Link to="/" onClick={logoutHandler}>
-                  Logout
-                </Link>
-              </li>
+              <Link to="/" onClick={logoutHandler}>
+                <li>Logout</li>
+              </Link>
             )}
           </ul>
         </div>

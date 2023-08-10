@@ -22,10 +22,6 @@
     width: 80%;
     margin: 0 auto;
 
-    .header-icons {
-      display: flex;
-    }
-
     img {
       width: 6rem;
       margin-right: 1rem;
@@ -36,7 +32,7 @@
     }
 
     .gear {
-      margin-left: 2rem;
+      margin-left: 1rem;
       cursor: pointer;
     }
 
@@ -56,6 +52,7 @@
       z-index: 10;
       top: 3.5rem;
       right: 3.5rem;
+      width: 200px;
       // padding: 2rem;
       // border-radius: 0.5rem;
       box-shadow: 0 1px 3px 1px rgba(38, 96, 164, 0.2);
@@ -66,19 +63,20 @@
         // align-items: center;
         justify-content: center;
 
+        a {
+          color: $dark-color;
+          // font-size: 1.1rem;
+          padding: 0.5rem;
+          width: 100%;
+        }
+
+        a:hover {
+          color: white;
+          background-color: $dark-color;
+        }
+
         li {
           margin: 0.5rem 0;
-
-          a {
-            color: $dark-color;
-            // font-size: 1.1rem;
-            padding: 0.5rem;
-          }
-
-          a:hover {
-            color: white;
-            background-color: $dark-color;
-          }
         }
       }
     }

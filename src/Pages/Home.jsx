@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import "./Home.scss";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 import Notes from "../components/Notes";
 import AddNote from "../components/AddNote";
 import About from "../Pages/About";
 import Folders from "../components/Folders";
 import FolderPage from "../Pages/FolderPage";
 import SearchResults from "../components/SearchResults";
+import AuthContext from "../store/auth-context";
 
 const firebaseURL =
   "https://flexnote-6cb48-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -22,6 +22,7 @@ const Home = () => {
   const [selectedNotes, setSelectedNotes] = useState([]);
   const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     const getNotes = async () => {
@@ -32,16 +33,20 @@ const Home = () => {
     getNotes();
   }, []);
 
+  const user = authCtx.userId;
+
   // Fetch Notes
   const fetchNotes = async () => {
     const res = await fetch(`${firebaseURL}notes.json`);
     const data = await res.json();
 
     if (data) {
-      const notesArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
+      const notesArray = Object.keys(data)
+        .map((key) => ({
+          id: key,
+          ...data[key],
+        }))
+        .filter((note) => note.userId === user);
       return notesArray;
     }
 
@@ -63,12 +68,12 @@ const Home = () => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(note),
+      body: JSON.stringify({ ...note, userId: user }),
     });
 
     const data = await res.json();
 
-    setNotes([...notes, { id: data.name, ...note }]);
+    setNotes([...notes, { id: data.name, ...note, userId: user }]);
   };
 
   // Delete Note
@@ -146,10 +151,12 @@ const Home = () => {
     const data = await res.json();
 
     if (data) {
-      const foldersArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
+      const foldersArray = Object.keys(data)
+        .map((key) => ({
+          id: key,
+          ...data[key],
+        }))
+        .filter((folder) => folder.userId === user);
       return foldersArray;
     }
 
@@ -163,12 +170,12 @@ const Home = () => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ name: folderName }),
+      body: JSON.stringify({ name: folderName, userId: user }),
     });
 
     const data = await res.json();
 
-    const newFolder = { id: data.name, name: folderName };
+    const newFolder = { id: data.name, name: folderName, userId: user };
 
     // Update the folder state with the new folder
     setFolders([...folders, newFolder]);
