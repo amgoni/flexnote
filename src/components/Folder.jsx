@@ -56,7 +56,7 @@ const Folder = ({ folder, onFolderClick, onRenameFolder, onDeleteFolder }) => {
           </div>
         </div>
       ) : (
-        <Link to={`/folder/${folder.id}`}>
+        <Link to={`/home/folder/${folder.id}`}>
           <span className="folder-name">{folder.name}</span>
         </Link>
       )}
